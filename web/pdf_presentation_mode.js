@@ -432,3 +432,12 @@ function toggleFullScreen() {
 }
 
 document.getElementById('presentationMode').addEventListener('click', toggleFullScreen);
+document.addEventListener('fullscreenchange', () => {
+  const viewer = document.getElementById('viewer');
+  const thumbnailviewer = document.getElementById('thumbnailView');
+
+  if (!document.fullscreenElement) {
+    viewer.style.backgroundColor = '';
+    thumbnailviewer.style.backgroundColor = '';
+  }
+});
