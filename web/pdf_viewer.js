@@ -393,6 +393,7 @@ class PDFViewer {
    * @type {number}
    */
   get currentPageNumber() {
+    console.log(this._currentPageNumber)
     return this._currentPageNumber;
   }
 

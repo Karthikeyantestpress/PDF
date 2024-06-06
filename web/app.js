@@ -2161,6 +2161,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
     "null",
     "http://mozilla.github.io",
     "https://mozilla.github.io",
+    "http://localhost:8888",
   ];
   // eslint-disable-next-line no-var
   var validateFileURL = function (file) {
@@ -2169,11 +2170,15 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
     }
     try {
       const viewerOrigin = new URL(window.location.href).origin || "null";
+      console.log(viewerOrigin);
+      console.log(HOSTED_VIEWER_ORIGINS.includes(viewerOrigin));
+      console.log('https://d36vpug2b5drql.cloudfront.net'==viewerOrigin)
       if (HOSTED_VIEWER_ORIGINS.includes(viewerOrigin)) {
         // Hosted or local viewer, allow for any file locations
         return;
       }
       const fileOrigin = new URL(file, window.location.href).origin;
+      console.log(fileOrigin);
       // Removing of the following line will not guarantee that the viewer will
       // start accepting URLs from foreign origin -- CORS headers on the remote
       // server must be properly configured.
