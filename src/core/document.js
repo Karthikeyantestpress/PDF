@@ -277,7 +277,9 @@ class Page {
   #replaceIdByRef(annotations, deletedAnnotations, existingAnnotations) {
     for (const annotation of annotations) {
       if (annotation.id) {
+        console.log(annotation.id)
         const ref = Ref.fromString(annotation.id);
+        console.log(ref)
         if (!ref) {
           warn(`A non-linked annotation cannot be modified: ${annotation.id}`);
           continue;
@@ -290,10 +292,11 @@ class Page {
         annotation.ref = ref;
         delete annotation.id;
       }
-    }
+    }replaceIdByRef
   }
 
   async saveNewAnnotations(handler, task, annotations, imagePromises) {
+    console.log('new')
     if (this.xfaFactory) {
       throw new Error("XFA: Cannot save new annotations.");
     }

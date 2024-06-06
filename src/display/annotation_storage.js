@@ -48,6 +48,7 @@ class AnnotationStorage {
    * @returns {Object}
    */
   getValue(key, defaultValue) {
+    alert('get called')
     const value = this.#storage.get(key);
     if (value === undefined) {
       return defaultValue;
@@ -70,6 +71,7 @@ class AnnotationStorage {
    * @param {string} key
    */
   remove(key) {
+    alert('remove called')
     this.#storage.delete(key);
 
     if (this.#storage.size === 0) {
@@ -93,8 +95,6 @@ class AnnotationStorage {
    */
   setValue(key, value) {
     const obj = this.#storage.get(key);
-    console.log('getting value');
-    console.log(obj);
     let modified = false;
     if (obj !== undefined) {
       for (const [entry, val] of Object.entries(value)) {

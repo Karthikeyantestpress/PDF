@@ -1629,6 +1629,7 @@ class CheckboxWidgetAnnotationElement extends WidgetAnnotationElement {
     element.tabIndex = DEFAULT_TAB_INDEX;
 
     element.addEventListener("change", event => {
+      alert('change called')
       const { name, checked } = event.target;
       for (const checkbox of this._getElementsByName(name, /* skipId = */ id)) {
         const curChecked = checked && checkbox.exportValue === data.exportValue;
@@ -3127,6 +3128,7 @@ class AnnotationLayer {
    * @memberof AnnotationLayer
    */
   async render(params) {
+    console.log('called ')
     const { annotations } = params;
     const layer = this.div;
     setLayerDimensions(layer, this.viewport);

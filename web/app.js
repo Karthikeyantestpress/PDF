@@ -95,6 +95,60 @@ const ViewOnLoad = {
   INITIAL: 1,
 };
 
+class LocalStorageUtils {
+  // Method to store an object in localStorage
+  static setObject(key, value) {
+    if (typeof key !== 'string' || !key) {
+      throw new Error('Key must be a non-empty string');
+    }
+    try {
+      const serializedValue = JSON.stringify(value);
+      localStorage.setItem(key, serializedValue);
+    } catch (error) {
+      console.error('Failed to store object in localStorage:', error);
+    }
+  }
+
+  // Method to retrieve an object from localStorage
+  static getObject(key) {
+    if (typeof key !== 'string' || !key) {
+      throw new Error('Key must be a non-empty string');
+    }
+    try {
+      const serializedValue = localStorage.getItem(key);
+      return serializedValue ? JSON.parse(serializedValue) : null;
+    } catch (error) {
+      console.error('Failed to retrieve object from localStorage:', error);
+      return null;
+    }
+  }
+
+  // Method to remove an item from localStorage
+  static removeObject(key) {
+    if (typeof key !== 'string' || !key) {
+      throw new Error('Key must be a non-empty string');
+    }
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error('Failed to remove object from localStorage:', error);
+    }
+  }
+
+  // Method to check if a key exists in localStorage
+  static hasKey(key) {
+    if (typeof key !== 'string' || !key) {
+      throw new Error('Key must be a non-empty string');
+    }
+    return localStorage.getItem(key) !== null;
+  }
+}
+
+function loadAnnotation(){
+  const annotations = localStorage.getItem('pdfAnnotations');
+  return annotations ? JSON.parse(annotations) : {};
+}
+
 const PDFViewerApplication = {
   initialBookmark: document.location.hash.substring(1),
   _initializedCapability: {
@@ -905,6 +959,7 @@ const PDFViewerApplication = {
    *                      destruction is completed.
    */
   async close() {
+    console.log('called ip')
     this._unblockDocumentLoadEvent();
     this._hideViewBookmark();
 
@@ -1042,6 +1097,12 @@ const PDFViewerApplication = {
 
     return loadingTask.promise.then(
       pdfDocument => {
+        const annotations = loadAnnotation  ();
+        if (Object.keys(annotations).length > 0) {
+          pdfDocument.annotationStorage.setAll(annotations);
+          pdfDocument.saveDocument();
+       }
+
         this.load(pdfDocument);
       },
       reason => {
@@ -1218,6 +1279,8 @@ const PDFViewerApplication = {
   },
 
   load(pdfDocument) {
+    console.log('dc')
+    console.log(pdfDocument)
     this.pdfDocument = pdfDocument;
 
     pdfDocument.getDownloadInfo().then(({ length }) => {
@@ -2170,15 +2233,11 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
     }
     try {
       const viewerOrigin = new URL(window.location.href).origin || "null";
-      console.log(viewerOrigin);
-      console.log(HOSTED_VIEWER_ORIGINS.includes(viewerOrigin));
-      console.log('https://d36vpug2b5drql.cloudfront.net'==viewerOrigin)
       if (HOSTED_VIEWER_ORIGINS.includes(viewerOrigin)) {
         // Hosted or local viewer, allow for any file locations
         return;
       }
       const fileOrigin = new URL(file, window.location.href).origin;
-      console.log(fileOrigin);
       // Removing of the following line will not guarantee that the viewer will
       // start accepting URLs from foreign origin -- CORS headers on the remote
       // server must be properly configured.

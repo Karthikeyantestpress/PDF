@@ -656,7 +656,7 @@ class Annotation {
       let structParent = dict.get("StructParent");
       structParent =
         Number.isInteger(structParent) && structParent >= 0 ? structParent : -1;
-
+      
       annotationGlobals.structTreeRoot.addAnnotationIdToPage(
         params.pageRef,
         structParent
