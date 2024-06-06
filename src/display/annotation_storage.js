@@ -93,6 +93,8 @@ class AnnotationStorage {
    */
   setValue(key, value) {
     const obj = this.#storage.get(key);
+    console.log('getting value');
+    console.log(obj);
     let modified = false;
     if (obj !== undefined) {
       for (const [entry, val] of Object.entries(value)) {
@@ -102,7 +104,7 @@ class AnnotationStorage {
         }
       }
     } else {
-      modified = true;
+      modified = true;  
       this.#storage.set(key, value);
     }
     if (modified) {
@@ -137,7 +139,12 @@ class AnnotationStorage {
    * @param {Object} obj
    */
   setAll(obj) {
+    console.log('object to set');
+    console.log(obj)
     for (const [key, val] of Object.entries(obj)) {
+      console.log('keyval')
+      console.log(key)
+      console.log(val)
       this.setValue(key, val);
     }
   }
