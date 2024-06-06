@@ -2531,6 +2531,7 @@ function webViewerRotationChanging(evt) {
 }
 
 function webViewerPageChanging({ pageNumber, pageLabel }) {
+  console.log('page changed')
   PDFViewerApplication.toolbar?.setPageNumber(pageNumber, pageLabel);
   PDFViewerApplication.secondaryToolbar?.setPageNumber(pageNumber);
 

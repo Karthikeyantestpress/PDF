@@ -89,6 +89,49 @@ See https://github.com/adobe-type-tools/cmap-resources
       }
     </script>
     <script src="viewer.js" type="module"></script>
+
+    <style>
+      :root {
+        --watermarkBottomPosition: 50%;
+        --watermarkRightPosition: 40%;
+      }
+
+      .canvasWrapper::before {
+        color: rgba(0, 0, 0, 0.1);
+        content: attr(data-watermark);
+        word-spacing: 2em;
+        transform: rotate(-60deg);
+        position: absolute;
+        bottom: var(--watermarkBottomPosition);
+        right: var(--watermarkRightPosition);
+        z-index: 9999999999;
+        font-size: 40px;
+      }
+    </style>
+
+    <script defer>
+      document.addEventListener("DOMContentLoaded", function () {
+        PDFViewerApplication.initializedPromise.then(function () {
+          PDFViewerApplication.eventBus.on("pagerendered", function setWaterMark() {
+            Array.from(document.querySelectorAll(".canvasWrapper")).forEach(
+              function (el) {
+                const urlParams = new URLSearchParams(window.location.search);
+                el.dataset.watermark = urlParams.get("watermark");
+              },
+            );
+          });
+        });
+      });
+
+      setInterval(() => {
+        const randomBottomPosition = Math.floor(Math.random() * 100) + 1 + "%";
+        const randomRightPosition = Math.floor(Math.random() * 100) + 1 + "%";
+
+        let root = document.documentElement;
+        root.style.setProperty("--watermarkBottomPosition", randomBottomPosition);
+        root.style.setProperty("--watermarkRightPosition", randomRightPosition);
+      }, 10000);
+    </script>
 <!--#endif-->
   </head>
 

@@ -410,3 +410,25 @@ class PDFPresentationMode {
 }
 
 export { PDFPresentationMode };
+
+
+function toggleFullScreen() {
+  const viewer = document.getElementById('viewer');
+  const thumbnailviewer = document.getElementById('thumbnailView');
+
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().then(() => {
+      viewer.style.backgroundColor = 'black';
+      thumbnailviewer.style.backgroundColor = 'black';
+    });
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen().then(() => {
+        viewer.style.backgroundColor = '';
+        thumbnailviewer.style.backgroundColor = '';
+      });
+    }
+  }
+}
+
+document.getElementById('presentationMode').addEventListener('click', toggleFullScreen);
