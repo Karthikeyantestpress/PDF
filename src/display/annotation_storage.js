@@ -23,6 +23,7 @@ const SerializableEmpty = Object.freeze({
   transfer: undefined,
 });
 
+
 /**
  * Key/value storage for annotation data in forms.
  */
@@ -48,13 +49,19 @@ class AnnotationStorage {
    * @returns {Object}
    */
   getValue(key, defaultValue) {
-    alert('get called')
     const value = this.#storage.get(key);
     if (value === undefined) {
       return defaultValue;
     }
 
     return Object.assign(defaultValue, value);
+  }
+
+  saveAnnotation(){
+    const annotations = this.getAll();
+    localStorage.setItem('pdfAnnotations', JSON.stringify(annotations));
+    console.log('last saved')
+    console.log(this.getAll())
   }
 
   /**
@@ -71,9 +78,8 @@ class AnnotationStorage {
    * @param {string} key
    */
   remove(key) {
-    alert('remove called')
     this.#storage.delete(key);
-
+    this.saveAnnotation();
     if (this.#storage.size === 0) {
       this.resetModified();
     }
@@ -109,6 +115,7 @@ class AnnotationStorage {
     }
     if (modified) {
       this.#setModified();
+      this.saveAnnotation();
     }
 
     if (
@@ -139,12 +146,7 @@ class AnnotationStorage {
    * @param {Object} obj
    */
   setAll(obj) {
-    console.log('object to set');
-    console.log(obj)
     for (const [key, val] of Object.entries(obj)) {
-      console.log('keyval')
-      console.log(key)
-      console.log(val)
       this.setValue(key, val);
     }
   }

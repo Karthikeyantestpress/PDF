@@ -959,7 +959,6 @@ const PDFViewerApplication = {
    *                      destruction is completed.
    */
   async close() {
-    console.log('called ip')
     this._unblockDocumentLoadEvent();
     this._hideViewBookmark();
 
@@ -1279,8 +1278,6 @@ const PDFViewerApplication = {
   },
 
   load(pdfDocument) {
-    console.log('dc')
-    console.log(pdfDocument)
     this.pdfDocument = pdfDocument;
 
     pdfDocument.getDownloadInfo().then(({ length }) => {
@@ -2590,7 +2587,6 @@ function webViewerRotationChanging(evt) {
 }
 
 function webViewerPageChanging({ pageNumber, pageLabel }) {
-  console.log('page changed')
   PDFViewerApplication.toolbar?.setPageNumber(pageNumber, pageLabel);
   PDFViewerApplication.secondaryToolbar?.setPageNumber(pageNumber);
 
